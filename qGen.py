@@ -26,19 +26,23 @@ class QuizMaster:
         else:
             return False
     
-    def handoverAnswers():
-        answerList = self.answers['dummyAnswers'].append(self.answers['answer'])
-        return rd.shuffle(answerList)
+    def handoverAnswers(self):
+        answerList = self.answers['dummy'] + [self.answers['answer']]
+        rd.shuffle(answerList)
+        return answerList 
 
 
 if __name__ == '__main__':
     
     qm = QuizMaster()
-    first = input('one number: ')
-    qm.changeRange(first,14)
-    while(1):
-        qm.createQuestion()
-        print 'what is ', qm.q1,'x',qm.q2
-        second = input('answer?')
-        print qm.checkAnswer(second)
+    qm.createQuestion()
+    answers = qm.handoverAnswers()
+    print answers
+    #first = input('one number: ')
+    #qm.changeRange(first,14)
+    #while(1):
+    #    qm.createQuestion()
+    #    print 'what is ', qm.q1,'x',qm.q2
+    #    second = input('answer?')
+    #    print qm.checkAnswer(second)
         

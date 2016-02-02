@@ -58,10 +58,9 @@ if __name__ == '__main__':
             print qm.answers['answer']
         qm.createQuestion()
         decorativeString = "What is "+str(qm.q1)+"x"+str(qm.q2)+"?"    
-        print decorativeString
         qFrame.question.set(decorativeString)
-        answersList = qm.answers['dummy'][:]
-        answersList.append(qm.answers['answer'])
+        answersList = qm.handoverAnswers()
+        #answersList.append(qm.answers['answer'])
         print answersList, qm.q1,qm.q2
         for a , b in zip(ansSet,answersList):
             a.set(b)

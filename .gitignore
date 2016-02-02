@@ -1,0 +1,5 @@
+#ignore the python byte files
+*.pyc
+
+#ignore swap files
+*.swp
