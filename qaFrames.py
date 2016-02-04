@@ -1,6 +1,7 @@
 import Tkinter as tk
 import tkMessageBox
 import qGen as qg
+import math 
 
 class questionFrame:
     def __init__(self,parent,intro='Welcome'):
@@ -11,7 +12,7 @@ class questionFrame:
         self.question = tk.StringVar()
         self.question.set(intro)
 
-        self.hwtext = tk.Label(frame,textvariable=self.question,width=20,height=10)
+        self.hwtext = tk.Label(frame,textvariable=self.question,width=20,height=5)
         self.hwtext.pack(side='top')
 
 class answerFrame:  
@@ -22,11 +23,13 @@ class answerFrame:
 
         self.ansSet = []
         for a in range(4):
-            ansSet.append(tk.IntVar())
+            self.ansSet.append(tk.IntVar())
+            self.ansSet[a].set(a)
 
         self.buttonSet = []
         for x in range(4):
-            buttonSet.append(tk.Button(frame,textvariable=self.ansSet[x],command=lambda:multiply(self.ansSet[x].get())))
+            self.buttonSet.append(tk.Button(frame,textvariable=self.ansSet[x],command=lambda:response(self.ansSet[x].get())))
+            frame.pack(side='top')
             
 if __name__ == '__main__':
     #generate root
@@ -45,11 +48,12 @@ if __name__ == '__main__':
     for a in range(4):
         ansSet.append(tk.IntVar())
         
+    ansSet[2].set(4)
     qm = qg.QuizMaster()
     qm.createQuestion()
 
 
-    def multiply(answer):
+    def response(answer):
         if not qm.checkAnswer(answer):
             tkMessageBox.Message(icon='info'
                     ,type='ok'
@@ -60,23 +64,16 @@ if __name__ == '__main__':
         decorativeString = "What is "+str(qm.q1)+"x"+str(qm.q2)+"?"    
         qFrame.question.set(decorativeString)
         answersList = qm.handoverAnswers()
-        #answersList.append(qm.answers['answer'])
         print answersList, qm.q1,qm.q2
         for a , b in zip(ansSet,answersList):
             a.set(b)
     
+    width = int(math.sqrt(len(ansSet)))
+    ButtonSet = []    
+    for i,item in enumerate(ansSet):
+        ButtonSet.append(tk.Button(answerFrame,textvariable=item,command=lambda item=item:response(item.get()),width=10,height=5))
+        ButtonSet[i].grid(row=int(math.floor(i/width)),column=int(i%width))    
 
-    firstButton = tk.Button(answerFrame,textvariable=ansSet[0],command=lambda:multiply(ansSet[0].get()),width=10,height=10)
-    firstButton.grid(row=0,column=0)    
-
-    secondButton = tk.Button(answerFrame,textvariable=ansSet[1],command=lambda:multiply(ansSet[1].get()),width=10,height=10)
-    secondButton.grid(row=0,column=1)    
-    
-    thirdButton = tk.Button(answerFrame,textvariable=ansSet[2],command=lambda:multiply(ansSet[2].get()),width=10,height=10)
-    thirdButton.grid(row=1,column=0)    
-
-    fourthButton = tk.Button(answerFrame,textvariable=ansSet[3],command=lambda:multiply(ansSet[3].get()),width=10,height=10)
-    fourthButton.grid(row=1,column=1)    
 
     def quit(event=None):
         root.destroy()
