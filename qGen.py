@@ -1,4 +1,6 @@
 import random as rd
+import numpy as np
+import pandas as pd
 
 def answerGen(first,second,num):
     trueAnswer = first * second
@@ -8,8 +10,11 @@ def answerGen(first,second,num):
 class QuizMaster:
     def __init__(self,generator=answerGen):
         self.gen = generator
-        self.firstRange = [13,19]
-        self.secondRange = [17,19]
+        self.firstRange = [3,19]
+        self.secondRange = [13,19]
+        self.correct = np.zeros(shape=(20,20))
+        self.false = np.zeros(shape=(20,20))
+        self.createQuestion()
 
     def createQuestion(self):
         self.q1 = rd.randint(self.firstRange[0],self.firstRange[1])
@@ -21,23 +26,29 @@ class QuizMaster:
         #self.secondRange = [n3,n4]
 
     def checkAnswer(self,answer):
+        a = min(self.q1,self.q2);b=max(self.q1,self.q2)
         if answer == self.answers['answer']:
+            self.correct[a][b] +=1
             return True
         else:
+            self.false[a][b] += 1
             return False
     
     def handoverAnswers(self):
         answerList = self.answers['dummy'] + [self.answers['answer']]
         rd.shuffle(answerList)
         return answerList 
-
-
-if __name__ == '__main__':
     
+    def showSkill(self):
+        print 'correct: ', self.correct
+        print 'false: ',self.false
+        print 'percentage: ', self.correct / (self.correct+self.false)
+
+
+def main():    
     qm = QuizMaster()
     qm.createQuestion()
     answers = qm.handoverAnswers()
-    print answers
     #first = input('one number: ')
     #qm.changeRange(first,14)
     #while(1):
@@ -46,3 +57,5 @@ if __name__ == '__main__':
     #    second = input('answer?')
     #    print qm.checkAnswer(second)
         
+if __name__ == '__main__':
+    main()
