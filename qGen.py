@@ -1,4 +1,6 @@
 import random as rd
+import numpy as np
+import pandas as pd
 
 def answerGen(first,second,num):
     trueAnswer = first * second
